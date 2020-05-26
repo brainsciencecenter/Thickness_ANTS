@@ -1,0 +1,106 @@
+#!/bin/bash -x
+
+# updated Aug. 16, 2019 by Jojo WANG 
+
+# Calculate thickness maps using ANTS
+
+export FLYWHEEL=${FLYWHEEL:=/flywheel/v0}
+export PATH=${FLYWHEEL}:$PATH
+
+export FLYWHEEL_INPUTDIR="${FLYWHEEL}/input"
+export FLYWHEEL_OUTPUTDIR="${FLYWHEEL}/output"
+
+# configure ANTs
+export ANTS_DIR="/opt/ants-2.2.0"
+export PATH=${ANTS_DIR}:$PATH
+
+CONFIG_FILE=${FLYWHEEL}/config.json 
+
+echo "/flywheel/v0"
+ls -lR /flywheel/v0
+
+cat "$CONFIG_FILE"
+
+#installFWSupportFiles
+
+
+#itksnap-wt -dss-tickets-list
+
+
+# Run the pipeline
+
+
+    t1Img=`ls $FLYWHEEL_INPUTDIR/*/*.nii.gz`
+    Sub=$(jq -r '.["config"]["Sub"]' $CONFIG_FILE)
+    T1Template=$(jq -r '.["config"]["T1Template"]' $CONFIG_FILE)
+    BrainTemplate=$(jq -r '.["config"]["BrainTemplate"]' $CONFIG_FILE)
+    BrainProbMask=$(jq -r '.["config"]["BrainProbMask"]' $CONFIG_FILE)
+    RegMask=$(jq -r '.["config"]["RegMask"]' $CONFIG_FILE)
+
+
+echo -e "\n"
+echo -e "\n"
+echo ==================
+echo ==================	
+echo t1Img=$t1Img
+echo Sub=$Sub
+echo T1Template=$T1Template
+echo BrainTemplate=$BrainTemplate
+echo BrainProbMask=$BrainProbMask
+echo RegMask=$RegMask
+echo -e "\n"
+echo -e "\n"
+
+   # Imgs yes or not
+if [ ! -f $t1Img ]; then
+	echo PLEASE check t1Img
+fi
+
+if [ ! -f $T1Template ]; then
+	echo PLEASE check T1Template: $T1Template
+fi
+
+if [ ! -f $BrainTemplate ]; then
+	echo PLEASE check BrainTemplate: $BrainTemplate
+fi
+
+if [ ! -f $BrainProbMask ]; then
+	echo PLEASE check BrainProbMask: $BrainProbMask
+fi
+
+if [ ! -f $RegMask ]; then
+	echo PLEASE check RegMask: $RegMask
+fi
+
+
+echo   " antsCorticalThickness.sh \
+	-d 3 \
+	-a $t1Img \
+	-o $FLYWHEEL_OUTPUTDIR/$Sub \
+	-g 1 \
+	-t $T1Template \
+	-m $BrainProbMask \
+	-f $RegMask \
+	-e $BrainTemplate \
+	-q 3 \
+	-p \"priors%d.nii.gz\" "
+ 
+
+    antsCorticalThickness.sh \
+	-d 3 \
+	-a $t1Img \
+	-o $FLYWHEEL_OUTPUTDIR/$Sub \
+	-g 1 \
+	-t $T1Template \
+	-m $BrainProbMask \
+	-f $RegMask \
+	-e $BrainTemplate \
+	-q 3 \
+	-p "priors%d.nii.gz" 
+	
+
+
+
+echo "/flywheel/v0"
+ls -lR /flywheel/v0
+

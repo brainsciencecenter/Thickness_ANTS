@@ -1,0 +1,84 @@
+{
+	"name": "thicknessCal",
+	"label": "Thickness_ANTS",
+	"description": "This gear is to use ANTS to calculate thickness maps",
+	"version": "1.0",
+
+	"inputs": {
+		"api-key": {
+			"base": "api-key"
+		},
+
+		"T1": {
+			"base": "file",
+			"description": "Any original/trimmed T1 nii.gz file",
+			"optional": true,
+			"type": {
+				"enum": [
+					"nii.gz"
+				]
+			}
+		}
+	},
+
+	"config": {
+		"Sub": {
+			"default": "UnknownSub", 
+			"description": "The subject's name ",
+			"type": "string"
+		},
+
+		"T1Template": {
+			"default": "T_template0_BrainCerebellum.nii.gz", 
+			"description": "The targeted T1 template used to normalize individual thickness to, for -t in antsCorticalThickness.sh ",
+			"type": "string"
+		},
+
+
+		"BrainTemplate": {
+			"default": "T_template0.nii.gz", 
+			"description": "The targeted brain template, for -e in antsCorticalThickness.sh",
+			"type": "string"
+
+		},
+ 
+		"BrainProbMask": {
+			"default": "T_template0_BrainCerebellumProbabilityMask.nii.gz", 
+			"description": "brainExtractionProbabilityMask, for -m in antsCorticalThickness.sh",
+			"type": "string"
+		},		
+
+		"RegMask": {
+			"default": "T_template0_BrainCerebellumExractionMask.nii.gz", 
+			"description": "Extraction registration mask, for -f in antsCorticalThickness.sh",
+			"type": "string"
+		}
+	},
+
+	"environment": {
+		"FLYWHEEL": "/flywheel/v0",
+		"FLYWHEEL_INPUT": "/flywheel/v0/input",
+		"FLYWHEEL_OUTPUT": "/flywheel/v0/output",
+		"GPG_KEY": "C01E1CAD5EA2C4F0B8E3571504C367C218ADD4FF",
+		"LANG": "C.UTF-8",
+		"PATH": "/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+		"PYTHONIOENCODING": "UTF-8",
+		"PYTHON_PIP_VERSION": "19.0.2",
+		"PYTHON_VERSION": "2.7.15",
+		"WORKDIR": "/app"
+	},
+	
+	"command": "./run",
+	"author": "Jojo WANG",
+	"maintainer": "Jojo WANG",
+	"cite": "List citations here.",
+	"license": "Other",
+	"source": "",
+	"url": "",
+	"custom": {
+		"gear-builder": {
+			"category": "analysis",
+			"image": "calthick:latest"
+		}
+	}
+}

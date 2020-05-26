@@ -1,0 +1,36 @@
+The steps to test gear
+
+
+(1) build docker
+
+gearName=calthick
+gearPath=/Users/jojo/Desktop/work/flywheel/gearJojo/gears. ## the directory of gears
+docker build --tag $gearName $gearPath
+
+
+
+
+
+
+(2) edit manifest.json
+
+Especially the custom block
+        "custom": {
+                "gear-builder": {
+                        "category": "analysis",
+                        "image": "calthick:latest"    ### calthick is from $gearName, latest is from TAG (which is output of “docker images")
+                }
+        }
+
+
+
+
+(3) login in fw
+
+fw login $APIKEY ### your APIKEY 
+
+
+
+(4) testing the gear locally
+
+fw gear local --T1=100113_T1.nii.gz --Sub=100113
